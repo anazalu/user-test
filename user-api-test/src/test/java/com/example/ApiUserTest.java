@@ -27,11 +27,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ApiUserTest {
     @BeforeAll
     static void setup() {
-        RestAssured.baseURI = "http://api:8080/api"; // "http://localhost:8080/api";
+        String apiBaseUrl = System.getenv("API_BASE_URL");
+        if (apiBaseUrl == null || apiBaseUrl.isBlank()) {
+            apiBaseUrl = "http://api:8080/api";
+        }
+        System.out.println("Using API Base URL: " + apiBaseUrl);
+
+        RestAssured.baseURI = apiBaseUrl;
         RestAssured.authentication = basic("username", "password");
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         System.setProperty("allure.results.directory", "target/allure-results");
-        // You can reset to the standard baseURI (localhost), basePath (empty), standard port (8080), standard root path (""), default authentication scheme (none) 
     }
 
     private List<Map<String, Object>> getAllUsers() {

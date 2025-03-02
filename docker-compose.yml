@@ -9,14 +9,13 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8080/api/users"]
       interval: 10s
       timeout: 5s
-      retries: 3
-      start_period: 10s
-    # Optional: The API is not required; comment this section to disable.
-
+      retries: 5
+      start_period: 30s
+  
   tests:
     build: ./user-api-test
     depends_on:
       api:
         condition: service_healthy
     environment:
-      - API_BASE_URL=http://api:8080
+      - API_BASE_URL=${API_BASE_URL:-http://api:8080/api}
