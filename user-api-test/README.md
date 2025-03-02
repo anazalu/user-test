@@ -14,5 +14,3 @@ mvn test -Dtest=ApiUserTest
 ```
 mvn test -Dtest=ApiUserTest#postRequestWithValidInput test
 ```
-## Error messages can also be validated, but this has not been implemented in auto-tests:
-![alt text](image-1.png)
