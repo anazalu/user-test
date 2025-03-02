@@ -23,6 +23,7 @@ import static io.restassured.RestAssured.basic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
 @Story("User CRUD tests")
 public class ApiUserTest {
     @BeforeAll
@@ -75,7 +76,7 @@ public class ApiUserTest {
     @ParameterizedTest
     @Step("POST request")
     @Description("Post - invalid input")
-    @MethodSource("com.example.TestData#provideInvalidPostRequestBodies")
+    @MethodSource("com.example.TestData#provideInvalidRequestBodies")
     public void postRequestWithInvalidInput(String requestBody) {
         given().
             header("Content-Type", "application/json").
@@ -102,7 +103,7 @@ public class ApiUserTest {
     
     @ParameterizedTest
     @Step("PUT request")
-    @MethodSource("com.example.TestData#provideInvalidPostRequestBodies")
+    @MethodSource("com.example.TestData#provideInvalidRequestBodies")
     @Description("Put - invalid input data")
     public void putRequestWithInvalidInputData(String putRequestBody) {
         String postRequestBody = 

@@ -21,7 +21,7 @@ public class TestData {
                 }
             """);
     }
-    public static Stream<String> provideInvalidPostRequestBodies() {
+    public static Stream<String> provideInvalidRequestBodies() {
         return Stream.of(
                 """
                 {
