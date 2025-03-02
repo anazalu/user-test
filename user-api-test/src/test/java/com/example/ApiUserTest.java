@@ -94,10 +94,60 @@ public class ApiUserTest {
         then().
             statusCode(404);
     }
+    
+    @ParameterizedTest
+    @Step("PUT request")
+    @MethodSource("com.example.TestData#provideInvalidPostRequestBodies")
+    @Description("Put - invalid input data")
+    public void putRequestWithInvalidInputData(String putRequestBody) {
+        String postRequestBody = 
+            """                
+                {
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "email": "john.doe@example.com",
+                    "dateOfBirth": "1985-10-01",
+                    "personalIdDocument":
+                    { 
+                        "documentId": "AB123456",
+                        "countryOfIssue": "US",
+                        "validUntil": "2030-12-31"
+                    }   
+                }
+            """;
+            
+        Response response =
+        given().
+            header("Content-Type", "application/json").
+            body(postRequestBody).
+        when().
+            post("/users").
+        then().
+            statusCode(201).
+        extract().
+            response();
+
+        String userIdString = response.path("id");
+
+        given().
+            header("Content-Type", "application/json").
+            body(putRequestBody).
+        when().
+            put("users/" + userIdString).
+        then().
+            statusCode(400);
+
+        given().
+            header("Content-Type", "application/json").
+        when().
+            delete("users/" + userIdString).
+        then().
+            statusCode(204);
+    }
    
     @ParameterizedTest
     @Step("POST request")
-    @Description("Positive scenario")
+    @Description("Post and delete user, positive scenario")
     @MethodSource("com.example.TestData#provideValidRequestBody")
     public void postRequestWithValidInput(String requestBody) {
         List<Map<String, Object>> users = getAllUsers();
@@ -115,7 +165,6 @@ public class ApiUserTest {
             response();
         
         String userIdString = response.path("id");
-        System.out.println(userIdString);
 
         users = getAllUsers();
         int userCountAfterPost = users.size();
